@@ -13,14 +13,19 @@ def cal_error(rating, u_id, m_id, U, M, users, movies):
     return rating - pred
 
 def get_step(error):
-    return np.sqrt(abs(error)
+    return np.sqrt(np.sqrt(abs(error)))/10000.0
 
 def update(U, M, users, movies, error, u_id, m_id):
     u_index = u_id -1
     m_index = m_id -1
     step = get_step(error)
-    U[u_index] = U[u_index] - step * ( -1 * error * movies[m_index])
-    M[m_index] = M[m_index] - step * ( -1 * error * users[u_index])
+    try:
+        U[u_index] = U[u_index] - step * ( -1 * error * movies[m_index])
+        M[m_index] = M[m_index] - step * ( -1 * error * users[u_index])
+        return 0
+    except:
+        print 'error in update'
+        return 1
 
 def cal_RMSE(U, M, users, movies, train):
     u_matrix = np.append(users, U, 1)
@@ -34,7 +39,7 @@ def cal_RMSE(U, M, users, movies, train):
     return np.sqrt(s)
 
 def SGD(U, M, users, movies, train):
-    RMSE_interval = 1
+    RMSE_interval = 10
     cnt = 0
     length = train.shape[0]
     while True:
@@ -43,8 +48,8 @@ def SGD(U, M, users, movies, train):
             m_id = train[i][1]
             rating = train[i][2]
             error = cal_error(rating, u_id, m_id, U, M, users, movies)
-            update(U, M, users, movies, error, u_id, m_id)
-
+            if update(U, M, users, movies, error, u_id, m_id):
+                break
         print 'epoch ======'
 
         if cnt % RMSE_interval == 0:
