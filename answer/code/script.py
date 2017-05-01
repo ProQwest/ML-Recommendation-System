@@ -98,10 +98,9 @@ def main():
     test = process_test() #[userid, movie id]
     train = process_train()  #[user id, movie id, rating]
     print 'program finish importing  ========='
-
-
-    # TODO:
-    arr = np.array([1,1])
+    model.SGD(U, M, users, movies, train)
+    print 'program finish training  ========='
+    arr = model.predict(U, M, users, movies, test)
     write_result(arr)
     print 'COMPLETE ======='
 
