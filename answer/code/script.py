@@ -33,7 +33,7 @@ def process_user():
         occu = int(user[i][3])
         users[i][occu + 8] = 1
 
-        U[i] = np.random.rand(U.shape[1])
+        U[i] = np.zeros(U.shape[1])
 
     assert (users.shape[0] == U.shape[0])
     assert (U.shape[1]  == 19)
@@ -69,7 +69,7 @@ def process_movie():
     movies = np.zeros((inp.shape[0],19))
     M = np.zeros((inp.shape[0],30))
     for i in range(inp.shape[0]):
-        M[i] = np.random.rand(M.shape[1])
+        M[i] = np.zeros(M.shape[1])
         temp = inp[i][1].split('|')
         movies[i][18] = 1
         for key in temp:

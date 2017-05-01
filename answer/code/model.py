@@ -13,7 +13,7 @@ def cal_error(rating, u_id, m_id, U, M, users, movies):
     return rating - pred
 
 def get_step(error):
-    return np.sqrt(error)
+    return np.sqrt(abs(error)
 
 def update(U, M, users, movies, error, u_id, m_id):
     u_index = u_id -1
@@ -34,7 +34,7 @@ def cal_RMSE(U, M, users, movies, train):
     return np.sqrt(s)
 
 def SGD(U, M, users, movies, train):
-    RMSE_interval = 500
+    RMSE_interval = 1
     cnt = 0
     length = train.shape[0]
     while True:
