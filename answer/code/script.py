@@ -1,5 +1,6 @@
-import os, time, random, math
+import os, time, random
 import numpy as np
+import model
 
 curr_path = os.getcwd()
 user_path = curr_path + '/../../users.dat'
@@ -40,7 +41,8 @@ def process_user():
 
 
 def process_test():
-    return
+    test = np.loadtxt(test_path, dtype = int, delimiter= ' ')
+    return test
 
 def process_movie():
     dic = {}
@@ -77,17 +79,31 @@ def process_movie():
 
 
 def process_train():
-    return
+    inp = np.loadtxt(train_path, dtype = str, delimiter='::')
+    miss = np.where(inp == '')
+    t = 0
+    for index in miss[0]:
+        inp = np.delete(inp, index - t, 0)
+        t += 1
+    return inp.astype(int)
 
-
-def write_result():
+def write_result(arr):
+    #input: np array
+    np.savetxt(result_path, arr, delimiter=",")
     return
 
 def main():
     U, users = process_user()
     M, movies = process_movie()
-    print 'program finish'
+    test = process_test() #[userid, movie id]
+    train = process_train()  #[user id, movie id, rating]
+    print 'program finish importing  ========='
 
+
+    # TODO:
+    arr = np.array([1,1])
+    write_result(arr)
+    print 'COMPLETE ======='
 
 if __name__ == '__main__':
     main()
