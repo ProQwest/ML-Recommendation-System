@@ -13,17 +13,20 @@ def cal_error(rating, u_id, m_id, U, M, users, movies):
     return rating - pred
 
 def get_step(error):
-    if abs(error) >= 0.6:
-        return np.sqrt(abs(error)) / 10000.0
-    return np.sqrt(abs(error)) * abs(error)**12
+    if abs(error) >= 0.3:
+        return abs(error) / 100.0
+    if abs(error) >= 0.1:
+        return abs(error) **2
+    return abs(error)
 
 def update(U, M, users, movies, error, u_id, m_id):
     u_index = u_id -1
     m_index = m_id -1
     step = get_step(error)
+    l = 0.1
     try:
-        U[u_index] = U[u_index] - step * ( -1 * error * movies[m_index])
-        M[m_index] = M[m_index] - step * ( -1 * error * users[u_index])
+        U[u_index] = U[u_index] - step * (-1*error*movies[m_index] +l*U[u_index])
+        M[m_index] = M[m_index] - step * (-1*error*users[u_index]  +l*M[m_index])
         return 0
     except:
         print 'error in update'
@@ -41,7 +44,7 @@ def cal_RMSE(U, M, users, movies, train):
     return np.sqrt(s)
 
 def SGD(U, M, users, movies, train):
-    RMSE_interval = 10
+    RMSE_interval = 2
     cnt = 0
     length = train.shape[0]
     while True:
@@ -51,6 +54,7 @@ def SGD(U, M, users, movies, train):
             rating = train[i][2]
             error = cal_error(rating, u_id, m_id, U, M, users, movies)
             if update(U, M, users, movies, error, u_id, m_id):
+                print 'update failed'
                 break
         print 'epoch ======'
 
@@ -58,7 +62,7 @@ def SGD(U, M, users, movies, train):
             print time.ctime(), 'iteration: ', cnt
             RMSE = cal_RMSE(U, M, users, movies, train)
             print 'RMSE = ', RMSE
-            if RMSE <= 0.875:
+            if RMSE <= 0.872:
                 break
         cnt += 1
     print 'SGD finish '
