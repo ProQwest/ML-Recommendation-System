@@ -13,7 +13,9 @@ def cal_error(rating, u_id, m_id, U, M, users, movies):
     return rating - pred
 
 def get_step(error):
-    return np.sqrt(np.sqrt(abs(error)))/10000.0
+    if abs(error) >= 0.6:
+        return np.sqrt(abs(error)) / 10000.0
+    return np.sqrt(abs(error)) * abs(error)**12
 
 def update(U, M, users, movies, error, u_id, m_id):
     u_index = u_id -1
@@ -56,7 +58,7 @@ def SGD(U, M, users, movies, train):
             print time.ctime(), 'iteration: ', cnt
             RMSE = cal_RMSE(U, M, users, movies, train)
             print 'RMSE = ', RMSE
-            if RMSE < 1:
+            if RMSE <= 0.875:
                 break
         cnt += 1
     print 'SGD finish '

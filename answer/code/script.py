@@ -11,7 +11,7 @@ test_path = curr_path + '/../../testing.dat'
 
 def process_user():
     user = np.loadtxt(user_path, dtype = str, delimiter='::')
-    users = np.zeros((user.shape[0],30))
+    users = np.zeros((user.shape[0],31))
     U = np.zeros((user.shape[0],19))
 
     for i in range(user.shape[0]):
@@ -32,7 +32,7 @@ def process_user():
 
         occu = int(user[i][3])
         users[i][occu + 8] = 1
-
+        users[i][30] = 1
         U[i] = np.zeros(U.shape[1])
 
     assert (users.shape[0] == U.shape[0])
@@ -67,7 +67,7 @@ def process_movie():
 
     inp = np.loadtxt(movie_path, dtype = str, delimiter='::')
     movies = np.zeros((inp.shape[0],19))
-    M = np.zeros((inp.shape[0],30))
+    M = np.zeros((inp.shape[0],31))
     for i in range(inp.shape[0]):
         M[i] = np.zeros(M.shape[1])
         temp = inp[i][1].split('|')
