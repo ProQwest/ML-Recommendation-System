@@ -62,7 +62,7 @@ def SGD(U, M, users, movies, train):
             print time.ctime(), 'iteration: ', cnt
             RMSE = cal_RMSE(U, M, users, movies, train)
             print 'RMSE = ', RMSE
-            if RMSE <= 0.872:
+            if cnt >= 40:
                 break
         cnt += 1
     print 'SGD finish '
