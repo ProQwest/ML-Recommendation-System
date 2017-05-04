@@ -13,14 +13,10 @@ def cal_error(rating, u_id, m_id, U, M, users, movies):
     return rating - pred
 
 def get_step(error):
-    if abs(error) >= 1:
+    if abs(error) >= 0.3:
         return abs(error) / 100.0
-    if abs(error) >= 0.5:
-        return abs(error) / 10.0
     if abs(error) >= 0.1:
         return abs(error) **2
-    if abs(error) >= 0.01:
-        return abs(error) / 10.0
     return abs(error)
 
 def update(U, M, users, movies, error, u_id, m_id):
